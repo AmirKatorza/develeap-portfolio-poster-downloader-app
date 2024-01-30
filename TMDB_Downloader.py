@@ -1,4 +1,4 @@
-from credentials import API_KEY_V3
+# from credentials import API_KEY_V3
 import requests
 import imdb
 import os
@@ -8,13 +8,11 @@ class TMDBDownloader:
     CONFIG_URL = 'https://api.themoviedb.org/3/configuration?api_key={key}'
     IMG_URL = "https://api.themoviedb.org/3/movie/{imdbid}/images?api_key={key}"
 
-    def __init__(self, api_key):
-        # self.api_key = os.getenv('API_KEY')        
+    def __init__(self, api_key):                
         self.api_key = api_key        
         if not self.api_key:
             structured_log('error', "API key not found in environment variables")  # Using structured logging for errors
             raise ValueError("Missing API key")
-
         try:
             response = requests.get(self.CONFIG_URL.format(key=self.api_key))
             response.raise_for_status()
@@ -67,7 +65,7 @@ class TMDBDownloader:
         return None, None, None
 
 # Usage example:
-if __name__ == "__main__":
-    downloader = TMDBDownloader(API_KEY_V3)
-    movie_id, filename, content = downloader.download_poster("Inception")
-    print(movie_id, filename)
+# if __name__ == "__main__":
+#     downloader = TMDBDownloader(API_KEY_V3)
+#     movie_id, filename, content = downloader.download_poster("Inception")
+#     print(movie_id, filename)

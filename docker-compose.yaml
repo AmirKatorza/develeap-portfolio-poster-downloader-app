@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  db-mongo:
+    image: mongo:latest
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - backend-net
+
+  app-flask:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tmdb_app
+    environment:
+      - API_KEY=${API_KEY}
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./posters_images:/app/posters_images
+    depends_on:
+      - db-mongo
+    networks:
+      - backend-net
+      - frontend-net
+
+networks:
+  backend-net:
+  frontend-net:
+
+volumes:
+  mongo-data:

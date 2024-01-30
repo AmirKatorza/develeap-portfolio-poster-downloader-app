@@ -1,3 +1,4 @@
+import os
 import logging
 from flask import Flask, request, render_template, redirect, url_for
 from Mongodb_API import MongoAPI
@@ -8,8 +9,14 @@ from structured_logging import structured_log
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
+
+# Read the API_KEY from environment variables
+API_KEY = os.environ.get('API_KEY')
+if not API_KEY:
+    raise ValueError("No API_KEY set for TMDBDownloader")
+
+downloader = TMDBDownloader(API_KEY)
 mdb = MongoAPI("movies", "posters")
-downloader = TMDBDownloader()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():

@@ -15,4 +15,4 @@ def structured_log(level, message, **kwargs):
     log_method(StructuredMessage(message, **kwargs).to_json())
 
 # Configure the logging at the root level of your application
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
