@@ -1,0 +1,30 @@
+# Ignore Git and version control files
+.git
+.gitignore
+
+# Ignore Python bytecode (compiled files)
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Ignore temporary files
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+credentials.py
+
+# Ignore Docker files
+Dockerfile
+docker-compose.yml
+
+# Ignore certain directories (examples)
+posters_images/
+node_modules/
+.pytest_cache/
+.vscode/
