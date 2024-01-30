@@ -15,6 +15,7 @@ services:
     container_name: tmdb_app
     environment:
       - API_KEY=${API_KEY}
+      - MONGO_IP=db-mongo  # Name of the MongoDB service in docker-compose
     ports:
       - "5001:5001"
     volumes:

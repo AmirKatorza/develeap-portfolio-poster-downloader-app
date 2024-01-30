@@ -10,13 +10,15 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 app = Flask(__name__)
 
-# Read the API_KEY from environment variables
+# Read the API_KEY from environment variables and initiate the TMDBDownloader class
 API_KEY = os.environ.get('API_KEY')
 if not API_KEY:
     raise ValueError("No API_KEY set for TMDBDownloader")
-
 downloader = TMDBDownloader(API_KEY)
-mdb = MongoAPI("movies", "posters")
+
+# Read the MONGO_IP from environment variables and initiate the MongoAPI class
+MONGO_IP = os.environ.get('MONGO_IP', 'localhost')
+mdb = MongoAPI("movies", "posters", ip=MONGO_IP)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
