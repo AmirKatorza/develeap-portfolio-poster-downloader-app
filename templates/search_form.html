@@ -1,0 +1,30 @@
+<!-- templates/search_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TMDB Movie Poster App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>TMDB Movie Poster App</h1>
+        <p>Please enter a movie name:</p>
+        <form action="/" method="post">
+            <input type="text" name="movie_name" id="movie_name" required>
+            <button type="submit">Search</button>
+        </form>
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+        {% if image_src %}
+            <img src="{{ image_src }}" alt="Movie Poster">
+            {% if show_delete_button %}
+                <form action="/delete/{{ movie_name }}" method="post">
+                    <button type="submit">Delete</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>

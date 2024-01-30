@@ -1,0 +1,15 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pymongo = "~=4.3.3"
+flask = "~=2.2.3"
+requests = "~=2.28.2"
+cinemagoer = "~=2022.12.27"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
