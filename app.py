@@ -1,5 +1,6 @@
 import os
 import logging
+import base64  # Import for Base64 encoding
 from flask import Flask, request, render_template, redirect, url_for
 from mongodb_api import MongoAPI
 from tmdb_downloader import TMDBDownloader
@@ -25,6 +26,7 @@ def index():
     message = ""
     show_delete_button = False
     image_src = None
+    movie_name = ""  # Initialize movie_name to pass to template for delete functionality
 
     if request.method == 'POST':
         movie_name = request.form.get('movie_name')
@@ -32,9 +34,12 @@ def index():
         structured_log('info', 'Movie search processed', movie_name=movie_name, status=result['status'])
 
         if result['status'] in ["Added to DB", "Found in DB"]:
+            # Retrieve the binary data of the image
             image_binary = result['data']
             if image_binary:
-                image_src = f"data:image/jpeg;base64,{image_binary}"
+                # Convert the binary data to a Base64-encoded string
+                image_base64 = base64.b64encode(image_binary).decode('utf-8')
+                image_src = f"data:image/jpeg;base64,{image_base64}"
                 show_delete_button = True
                 message = "Movie found in DB." if result['status'] == "Found in DB" else "Movie added to DB."
             else:
@@ -42,7 +47,7 @@ def index():
         elif result['status'] == "Not Exists":
             message = "Movie not found in TMDB."
 
-    return render_template('search_form.html', image_src=image_src, message=message, show_delete_button=show_delete_button)
+    return render_template('search_form.html', image_src=image_src, message=message, show_delete_button=show_delete_button, movie_name=movie_name)
 
 @app.route('/delete/<movie_name>', methods=['POST'])
 def delete_movie(movie_name):

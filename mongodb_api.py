@@ -1,8 +1,6 @@
 from pymongo import MongoClient
 import gridfs
-import os
 from structured_logging import structured_log  # Importing structured logging utility
-# import TMDB_Downloader
 
 class MongoAPI:
     def __init__(self, db_name, collection_name, ip="localhost", port=27017):
@@ -26,13 +24,8 @@ class MongoAPI:
             file_id = self.db[self.collection_files].find_one({"movie_name": movie_name}, {"_id": 1})
             if file_id:
                 byte_arr = self.fs.get(file_id['_id']).read()
-                poster_path = f"./posters_images/{movie_name}.jpeg"
-                if not os.path.exists(poster_path):
-                    os.makedirs(os.path.dirname(poster_path), exist_ok=True)
-                with open(poster_path, 'wb') as file:
-                    file.write(byte_arr)
-                structured_log('info', 'Image read and stored', movie_name=movie_name, path=poster_path)
-                return {"status": "Success", "data": file_id}
+                structured_log('info', 'Image read from DB', movie_name=movie_name)
+                return {"status": "Success", "data": byte_arr, "_id": file_id['_id']}
             else:
                 structured_log('warning', 'Image not found', movie_name=movie_name)
                 return {"status": "No action needed", "data": None}
@@ -77,6 +70,7 @@ class MongoAPI:
         except Exception as e:
             structured_log('error', 'Error updating metadata', error=str(e), movie_name=movie_name)
             return {"status": "Error", "error": str(e), "data": None}
+
 
 # Example usage
 if __name__ == '__main__':

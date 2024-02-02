@@ -1,4 +1,3 @@
-# from credentials import API_KEY_V3
 import requests
 import imdb
 import os
@@ -64,8 +63,10 @@ class TMDBDownloader:
                 structured_log('error', "Error downloading poster", movie_name=movie_name, movie_id=movie_id, error=str(e))  # Structured logging for exceptions
         return None, None, None
 
+
 # Usage example:
-# if __name__ == "__main__":
-#     downloader = TMDBDownloader(API_KEY_V3)
-#     movie_id, filename, content = downloader.download_poster("Inception")
-#     print(movie_id, filename)
+if __name__ == "__main__":
+    API_KEY = os.environ.get('API_KEY')
+    downloader = TMDBDownloader(API_KEY)
+    movie_id, filename, content = downloader.download_poster("Inception")
+    print(movie_id, filename)
