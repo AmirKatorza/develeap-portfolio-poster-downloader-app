@@ -10,7 +10,7 @@ COPY . /app
 # If you're using Pipenv:
 # Install pipenv and dependencies from Pipfile
 # RUN pip install --upgrade pip && pip install pipenv
-# RUN pipenv install --deploy --ignore-pipfile
+# RUN pipenv install --system --deploy --ignore-pipfile
 
 # If you're using requirements.txt (uncomment these lines and comment out Pipenv lines above):
 # COPY requirements.txt /app/

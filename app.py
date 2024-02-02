@@ -1,8 +1,8 @@
 import os
 import logging
 from flask import Flask, request, render_template, redirect, url_for
-from Mongodb_API import MongoAPI
-from TMDB_Downloader import TMDBDownloader
+from mongodb_api import MongoAPI
+from tmdb_downloader import TMDBDownloader
 from mongo_tmdb_logic import mongo_tmdb
 from structured_logging import structured_log
 
