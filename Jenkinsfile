@@ -16,7 +16,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-east-1'
         ECR_URI = '644435390668.dkr.ecr.us-east-1.amazonaws.com'
         ECR_REPO = 'amirk-poster-downloader'
-        REPO_CRED_ID = ''
+        SSH_CRED_ID = 'github-ssh-key'
     }    
 
     stages {
@@ -30,25 +30,25 @@ pipeline {
 
         stage('Version calculation') {
             steps {
-                echo "Version calculation Stage"
+                echoStageName()
                 script {
-                    sshagent(credentials: ["${REPO_CRED_ID}"]) {
-                        // Read base release version
-                        def releaseVersion = sh(script: 'cat version.txt', returnStdout: true).trim()
-
+                    sshagent(credentials: ["${SSH_CRED_ID}"]) {
+                        
                         // Fetch all tags
                         sh 'git fetch --tags'
                         def tags = sh(script: 'git tag -l --sort=-v:refname', returnStdout: true).trim()
 
+                        // Find the latest tag
+                        def latestTag = tags.tokenize('\n')[0] ?: '0.0.0'
+
                         // Determine version increment type based on last commit message
                         def incrementType = determineVersionIncrement()
-                        def latestTag = tags.tokenize('\n').find { it.startsWith(releaseVersion) }
                         def calculatedVersion = calculateNextVersion(latestTag, incrementType)
+                        echo "Calculated version: ${calculatedVersion}"
 
                         // Set environment variables
-                        env.LATEST_TAG = latestTag ?: 'N/A'
-                        env.RELEASE_VERSION = releaseVersion
-                        env.CALCULATED_VERSION = calculatedVersion
+                        env.LATEST_TAG = latestTag ?: 'N/A'                        
+                        env.CALCULATED_VERSION = calculatedVersion                        
                     }
                 }
             }
