@@ -145,7 +145,7 @@ pipeline {
             sh '''
                 docker image rm ${ECR_URI}/${ECR_REPO}:${CALCULATED_VERSION} || true                
             '''
-            cleanWs()
+            // cleanWs()
         }
     }
 }
