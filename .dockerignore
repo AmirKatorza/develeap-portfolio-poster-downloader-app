@@ -22,9 +22,13 @@ credentials.py
 # Ignore Docker files
 Dockerfile
 docker-compose.yml
+.dockerignore
+Jenkinsfile
 
 # Ignore certain directories (examples)
 posters_images/
 node_modules/
 .pytest_cache/
 .vscode/
+nginx/
+```
