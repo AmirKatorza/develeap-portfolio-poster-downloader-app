@@ -6,7 +6,7 @@ services:
     volumes:
       - mongo-data:/data/db
     networks:
-      - backend-net
+      - ci_network
 
   app-flask:
     build:
@@ -17,12 +17,9 @@ services:
       - API_KEY=${API_KEY}
       - MONGO_IP=db-mongo  # Name of the MongoDB service in docker-compose    
     depends_on:
-      - db-mongo
-    # ports:
-    #   - "5001:5001"
+      - db-mongo    
     networks:
-      - backend-net
-      - frontend-net
+      - ci_network
   
   reverse-proxy-nginx:
     image: nginx:mainline-alpine
@@ -31,11 +28,11 @@ services:
     volumes:
       - ./nginx/conf.d/nginx.conf:/etc/nginx/conf.d/nginx.conf
     networks:
-      - frontend-net      
+      - ci_network      
 
 networks:
-  backend-net:
-  frontend-net:
+  ci_network:
+    driver: bridge
 
 volumes:
   mongo-data:
