@@ -16,6 +16,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-east-1'
         ECR_URI = '644435390668.dkr.ecr.us-east-1.amazonaws.com'
         ECR_REPO = 'amirk-poster-downloader'
+        NGINX_SERVICE = 'reverse-proxy-nginx'
         SSH_CRED_ID = 'github-ssh-key'
     }    
 
@@ -75,7 +76,7 @@ pipeline {
                 echoStageName()
                 sh '''
                     CURL_EXIT_CODE=0
-                    curl -fsSLi reverse-proxy-nginx:${APP_PORT} --max-time 20 || CURL_EXIT_CODE="$?"
+                    curl -fsSLi ${NGINX_SERVICE}:${APP_PORT} --max-time 20 || CURL_EXIT_CODE="$?"
                     echo "cURL Exit Code: ${CURL_EXIT_CODE}"
                     if [ $CURL_EXIT_CODE -ne 0 ]; then
                         echo "App is NOT running correctly!"
@@ -145,7 +146,7 @@ pipeline {
             sh '''
                 docker image rm ${ECR_URI}/${ECR_REPO}:${CALCULATED_VERSION} || true                
             '''
-            // cleanWs()
+            cleanWs()
         }
     }
 }

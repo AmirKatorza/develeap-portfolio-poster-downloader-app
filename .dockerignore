@@ -2,33 +2,17 @@
 .git
 .gitignore
 
-# Ignore Python bytecode (compiled files)
-__pycache__
-*.pyc
-*.pyo
-*.pyd
-.Python
 
 # Ignore temporary files
 # .env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-credentials.py
 
 # Ignore Docker files
 Dockerfile
 docker-compose.yml
 .dockerignore
+
+# Ignore Jenkins files
 Jenkinsfile
 
 # Ignore certain directories (examples)
-posters_images/
-node_modules/
-.pytest_cache/
-.vscode/
 nginx/
-```
