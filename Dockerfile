@@ -13,7 +13,6 @@ COPY . /app
 # RUN pipenv install --system --deploy --ignore-pipfile
 
 # If you're using requirements.txt (uncomment these lines and comment out Pipenv lines above):
-# COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 5001 available to the world outside this container
