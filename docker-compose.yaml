@@ -31,8 +31,7 @@ services:
       - ci_network      
 
 networks:
-  ci_network:
-    driver: bridge
+  ci_network:  
 
 volumes:
   mongo-data:
