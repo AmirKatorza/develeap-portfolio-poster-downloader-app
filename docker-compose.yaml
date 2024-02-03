@@ -22,7 +22,7 @@ services:
       - "5001:5001"
     networks:
       - backend-net
-      - frontend-net
+      # - frontend-net
   
   # reverse-proxy-nginx:
   #   image: nginx:latest
