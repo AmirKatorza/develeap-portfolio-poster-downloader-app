@@ -75,7 +75,7 @@ pipeline {
                 echoStageName()
                 sh '''
                     CURL_EXIT_CODE=0
-                    curl -fsSLi app:5001 --max-time 20 || CURL_EXIT_CODE="$?"
+                    curl -fsSLi app-flask:5001 --max-time 20 || CURL_EXIT_CODE="$?"
                     echo "cURL Exit Code: ${CURL_EXIT_CODE}"
                     if [ $CURL_EXIT_CODE -ne 0 ]; then
                         echo "App is NOT running correctly!"
