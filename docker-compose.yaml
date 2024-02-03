@@ -31,7 +31,8 @@ services:
       - ci_network      
 
 networks:
-  ci_network:  
+  ci_network:
+    external: true
 
 volumes:
   mongo-data:
