@@ -18,22 +18,24 @@ services:
       - MONGO_IP=db-mongo  # Name of the MongoDB service in docker-compose    
     depends_on:
       - db-mongo
+    ports:
+      - "5001:5001"
     networks:
       - backend-net
       - frontend-net
   
-  reverse-proxy-nginx:
-    image: nginx:latest
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    networks:
-      - frontend-net      
+  # reverse-proxy-nginx:
+  #   image: nginx:latest
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  #   networks:
+  #     - frontend-net      
 
 networks:
   backend-net:
-  frontend-net:
+  # frontend-net:
 
 volumes:
   mongo-data:
