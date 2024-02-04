@@ -67,13 +67,13 @@ pipeline {
                 echoStageName()                
                 sh "docker compose down -v || true"
                 sh "docker compose up -d"
-                sh "sleep 60"
+                sh "sleep 20"
             }
         }
 
         stage('Debug Services & Networks') {
             steps {
-                echo "Debugging Stage"
+                echoStageName()
                 script {
                     // List all running containers
                     echo "Listing all running containers..."
@@ -165,7 +165,7 @@ pipeline {
             sh '''
                 docker image rm ${ECR_URI}/${ECR_REPO}:${CALCULATED_VERSION} || true                
             '''
-            // cleanWs()
+            cleanWs()
         }
     }
 }
