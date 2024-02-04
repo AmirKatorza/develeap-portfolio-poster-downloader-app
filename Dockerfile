@@ -1,19 +1,21 @@
 # Use an official Python runtime as a parent image
-FROM python:3.9-alpine
+FROM python:3.10.12-alpine
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# If you're using Pipenv:
+# If you're using Pipenv (uncomment these lines and comment out requirements.txt lines below):
 # Install pipenv and dependencies from Pipfile
+# COPY Pipfile Pipfile.lock /app/
 # RUN pip install --upgrade pip && pip install pipenv
 # RUN pipenv install --system --deploy --ignore-pipfile
 
-# If you're using requirements.txt (uncomment these lines and comment out Pipenv lines above):
+# If you're using requirements.txt:
+COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the current directory contents into the container at /app
+COPY ./app /app
 
 # Make port 5001 available to the world outside this container
 EXPOSE 5001
