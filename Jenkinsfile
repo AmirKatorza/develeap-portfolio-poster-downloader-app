@@ -79,10 +79,6 @@ pipeline {
                     echo "Listing all running containers..."
                     sh 'docker ps'
 
-                    // Inspect the reverse-proxy-nginx container to get detailed network information
-                    echo "Inspecting reverse-proxy-nginx container..."
-                    sh 'docker inspect reverse-proxy-nginx'
-
                     // Optionally, list all networks to see all connected containers
                     echo "Listing all networks..."
                     sh 'docker network ls'

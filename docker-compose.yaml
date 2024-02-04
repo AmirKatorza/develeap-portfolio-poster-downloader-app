@@ -22,11 +22,13 @@ services:
       - ci_network
   
   reverse-proxy-nginx:
-    image: nginx:mainline-alpine
+    build: 
+      context: ./nginx/
+      dockerfile: Dockerfile
     ports:
       - "80:80"
-    volumes:
-      - ./nginx/conf.d/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    # volumes:
+    #   - ./nginx/conf.d/nginx.conf:/etc/nginx/conf.d/nginx.conf
     networks:
       - ci_network      
 
