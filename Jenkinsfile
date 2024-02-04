@@ -71,12 +71,35 @@ pipeline {
             }
         }
 
+        stage('Debug Services & Networks') {
+            steps {
+                echo "Debugging Stage"
+                script {
+                    // List all running containers
+                    echo "Listing all running containers..."
+                    sh 'docker ps'
+
+                    // Inspect the reverse-proxy-nginx container to get detailed network information
+                    echo "Inspecting reverse-proxy-nginx container..."
+                    sh 'docker inspect reverse-proxy-nginx'
+
+                    // Optionally, list all networks to see all connected containers
+                    echo "Listing all networks..."
+                    sh 'docker network ls'
+
+                    // Inspecting ci_network to see which containers are connected
+                    echo "Inspecting ci_network..."
+                    sh 'docker network inspect ci_network'
+                }
+            }
+        }
+
         stage("Nginx Health Check") {            
             steps {
                 echoStageName()
                 sh '''
                     CURL_EXIT_CODE=0
-                    curl -fsSLi http://localhost:80 --max-time 20 || CURL_EXIT_CODE="$?"
+                    curl -fsSLi http://${NGINX_SERVICE}:${APP_PORT} --max-time 20 || CURL_EXIT_CODE="$?"
                     echo "cURL Exit Code: ${CURL_EXIT_CODE}"
                     if [ $CURL_EXIT_CODE -ne 0 ]; then
                         echo "App is NOT running correctly!"
