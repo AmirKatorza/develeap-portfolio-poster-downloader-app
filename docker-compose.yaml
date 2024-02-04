@@ -23,7 +23,7 @@ services:
   
   reverse-proxy-nginx:
     build: 
-      context: ./nginx/
+      context: ./nginx
       dockerfile: Dockerfile
     ports:
       - "80:80"

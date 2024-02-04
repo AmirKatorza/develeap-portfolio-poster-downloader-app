@@ -15,4 +15,4 @@ docker-compose.yml
 Jenkinsfile
 
 # Ignore certain directories (examples)
-nginx/
+# nginx/
