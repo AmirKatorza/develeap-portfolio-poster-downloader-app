@@ -67,7 +67,7 @@ pipeline {
                 echoStageName()                
                 sh "docker compose down -v || true"
                 sh "docker compose up -d"
-                sh "sleep 30"
+                sh "sleep 60"
             }
         }
 
