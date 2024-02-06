@@ -7,7 +7,11 @@ from tmdb_downloader import TMDBDownloader
 from mongo_tmdb_logic import mongo_tmdb
 from structured_logging import structured_log
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# Determine log level from environment variable (default to INFO if not set)
+log_level = os.getenv('LOG_LEVEL', 'INFO').upper()
+logging.basicConfig(level=getattr(logging, log_level), format='%(asctime)s - %(levelname)s - %(message)s')
+
+# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 

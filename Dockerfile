@@ -4,15 +4,15 @@ FROM python:3.10.12-alpine
 # Set the working directory in the container
 WORKDIR /app
 
-# If you're using Pipenv (uncomment these lines and comment out requirements.txt lines below):
+# If you're using requirements.txt:
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# If you're using Pipenv (uncomment these lines and comment out requirements.txt lines above):
 # Install pipenv and dependencies from Pipfile
 # COPY Pipfile Pipfile.lock /app/
 # RUN pip install --upgrade pip && pip install pipenv
 # RUN pipenv install --system --deploy --ignore-pipfile
-
-# If you're using requirements.txt:
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the current directory contents into the container at /app
 COPY ./app /app
