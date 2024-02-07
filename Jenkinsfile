@@ -27,7 +27,7 @@ pipeline {
     stages {
         stage("Checkout SCM") {
             steps {
-                echoStageName("Checkout SCM")
+                echoStageName())
                 deleteDir()
                 checkout scm
             }
