@@ -6,7 +6,7 @@ services:
     volumes:
       - mongo-data:/data/db
     networks:
-      - ci_network
+      - backend_network
 
   app-flask:
     build:
@@ -19,20 +19,22 @@ services:
     depends_on:
       - db-mongo    
     networks:
-      - ci_network
+      - backend_network
+      - frontend_network
   
   reverse-proxy-nginx:
     build: 
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - "80:80"
-    # volumes:
-    #   - ./nginx/conf.d/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - "80:80"    
     networks:
+      - frontend_network
       - ci_network      
 
 networks:
+  backend_network:
+  frontend_network:
   ci_network:
     external: true
 
