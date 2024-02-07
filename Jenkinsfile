@@ -18,12 +18,16 @@ pipeline {
         ECR_REPO = 'amirk-poster-downloader'
         NGINX_SERVICE = 'reverse-proxy-nginx'
         SSH_CRED_ID = 'github-ssh-key'
+        GITOPS_REPO_NAME = 'develeap-portfolio-poster-downloader-gitops'
+        GITOPS_REPO_URL = 'git@github.com:AmirKatorza/develeap-portfolio-poster-downloader-gitops.git'
+        GIT_USER_NAME = 'Jenkins'
+        GIT_USER_EMAIL = 'amir.katorza@gmail.com'
     }    
 
     stages {
         stage("Checkout SCM") {
             steps {
-                echo "Checkout SCM Stage"
+                echoStageName("Checkout SCM")
                 deleteDir()
                 checkout scm
             }
@@ -53,7 +57,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }        
 
         stage("Build Docker Image") {
             steps {
@@ -159,16 +163,56 @@ pipeline {
             }
         }        
     }
-    
+
+    stage('Deploy') {
+            steps {
+                echoStageName()
+                cleanWs()
+                sshagent(credentials: ["${SSH_CRED_ID}"]) {
+                    sh "git clone ${GITOPS_REPO_URL} ${GITOPS_REPO_NAME}"
+                    dir(GITOPS_REPO_NAME) {
+                        sh """
+                            git checkout main
+                            git config user.name '${GIT_USER_NAME}'
+                            git config user.email '${GIT_USER_EMAIL}'
+                        """
+                    }
+                }
+
+                dir("${GITOPS_REPO_NAME}/poster-downloader") {
+                    // Using sed to replace the image tag in values.yaml
+                    sh """
+                        sed -i 's/tag: .*/tag: "${CALCULATED_VERSION}"/' values.yaml
+                    """
+                }
+
+                sshagent(credentials: ["${SSH_CRED_ID}"]) {
+                    dir(GITOPS_REPO_NAME) {
+                        sh """
+                            git add .
+                            git commit -m 'Jenkins Deploy - Build No. ${BUILD_NUMBER}, Version ${CALCULATED_VERSION}'
+                            git push origin main
+                        """
+                    }
+                }
+            }
+        }
+    }
+
     post {
         always {
             sh '''
-                docker image rm ${ECR_URI}/${ECR_REPO}:${CALCULATED_VERSION} || true                
+                docker image rm ${ECR_URI}/${ECR_REPO}:${CALCULATED_VERSION} || true
+                docker image prune -af
+                docker volume prune -af
+                docker container prune -f
+                docker network prune -f                
             '''
             cleanWs()
         }
     }
 }
+       
 
 // Custom function to echo the current stage name (optional for clarity in logs)
 def echoStageName() {
