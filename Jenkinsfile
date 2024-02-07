@@ -211,8 +211,7 @@ pipeline {
             cleanWs()
         }
     }
-}
-       
+}       
 
 // Custom function to echo the current stage name (optional for clarity in logs)
 def echoStageName() {
