@@ -161,10 +161,9 @@ pipeline {
                     """
                 }
             }
-        }        
-    }
+        }
 
-    stage('Deploy') {
+        stage('Deploy') {
             steps {
                 echoStageName()
                 cleanWs()
@@ -197,7 +196,7 @@ pipeline {
                 }
             }
         }
-    }
+    }   
 
     post {
         always {
