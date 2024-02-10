@@ -4,15 +4,15 @@ services:
   db-mongo:
     image: mongo:latest
     volumes:
-      - mongo-data:/data/db
-    networks:
-      - backend_network
+      - mongo-data:/data/db    
     healthcheck:
       test: ["CMD", "mongo", "--quiet", "db-mongo", "--eval", "quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)"]
       interval: 10s
       timeout: 10s
       retries: 5
       start_period: 40s
+    networks:
+      - backend_network
 
   app-flask:
     build:
