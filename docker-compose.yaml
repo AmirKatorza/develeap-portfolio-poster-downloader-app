@@ -7,6 +7,12 @@ services:
       - mongo-data:/data/db
     networks:
       - backend_network
+    healthcheck:
+      test: ["CMD", "mongo", "--quiet", "db-mongo", "--eval", "quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   app-flask:
     build:
@@ -15,9 +21,9 @@ services:
     container_name: tmdb_app
     environment:
       - API_KEY=${API_KEY}
-      - MONGO_IP=db-mongo  # Name of the MongoDB service in docker-compose    
+      - MONGO_IP=db-mongo  # Name of the MongoDB service in docker-compose
     depends_on:
-      - db-mongo    
+      - db-mongo        
     networks:
       - backend_network
       - frontend_network
@@ -26,11 +32,13 @@ services:
     build: 
       context: ./nginx
       dockerfile: Dockerfile
+    depends_on:
+      - app-flask
     ports:
-      - "80:80"    
+      - "80:80"
     networks:
       - frontend_network
-      - ci_network      
+      - ci_network
 
 networks:
   backend_network:
