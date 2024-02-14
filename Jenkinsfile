@@ -185,7 +185,7 @@ pipeline {
                 //     """
                 // }
 
-                dir("${GITOPS_REPO_NAME}/poster-downloader-chart") {
+                dir("${GITOPS_REPO_NAME}/cluster-resources/poster-downloader-chart") {
                     // Using yq to replace the image tag in values.yaml
                     sh """
                         yq eval '.app.image.tag = "${CALCULATED_VERSION}"' -i values.yaml
