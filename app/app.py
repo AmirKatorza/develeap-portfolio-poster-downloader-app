@@ -22,18 +22,20 @@ if not API_KEY:
 downloader = TMDBDownloader(API_KEY)
 
 # Read the MONGO_IP from environment variables and initiate the MongoAPI class
-MONGODB_HOSTS = os.getenv('MONGODB_HOSTS', 'localhost')
-DATABASE = os.getenv('DATABASE', 'movies')
+MONGODB_HOSTS = os.getenv('MONGODB_HOSTS', 'localhost').strip()
+DATABASE = os.getenv('DATABASE', 'movies').strip()
 
 if (MONGODB_HOSTS == 'localhost') or (MONGODB_HOSTS == 'db-mongo'):
     MONGO_IP = MONGODB_HOSTS
 else:
-    ROOT_USER = os.getenv('ROOT_USER', 'root')
+    ROOT_USER = os.getenv('ROOT_USER', 'root').strip()
     ROOT_PASSWORD = os.getenv('ROOT_PASSWORD', '').strip()
     if not ROOT_PASSWORD:
         raise ValueError("No ROOT_PASSWORD set for MongoAPI")    
     MONGO_IP = f"mongodb://{ROOT_USER}:{ROOT_PASSWORD}@{MONGODB_HOSTS}/{DATABASE}"
 
+# Log the MONGO_IP variable and initiate the MongoAPI class
+structured_log('info', 'Initializing MongoAPI', mongo_ip=MONGO_IP)
 mdb = MongoAPI(DATABASE, "posters", ip=MONGO_IP)
 
 @app.route('/', methods=['GET', 'POST'])
