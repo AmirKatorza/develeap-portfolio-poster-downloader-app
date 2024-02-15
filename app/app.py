@@ -25,8 +25,8 @@ downloader = TMDBDownloader(API_KEY)
 MONGODB_HOSTS = os.getenv('MONGODB_HOSTS', 'localhost')
 DATABASE = os.getenv('DATABASE', 'movies')
 
-if MONGODB_HOSTS == 'localhost':
-    MONGO_IP = 'localhost'
+if (MONGODB_HOSTS == 'localhost') or (MONGODB_HOSTS == 'db-mongo'):
+    MONGO_IP = MONGODB_HOSTS
 else:
     ROOT_USER = os.getenv('ROOT_USER', 'root')
     ROOT_PASSWORD = os.getenv('ROOT_PASSWORD', '').strip()

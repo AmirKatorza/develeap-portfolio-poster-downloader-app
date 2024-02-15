@@ -21,7 +21,7 @@ services:
     container_name: tmdb_app
     environment:
       - API_KEY=${API_KEY}
-      - MONGO_IP=db-mongo  # Name of the MongoDB service in docker-compose
+      - MONGODB_HOSTS=db-mongo  # Name of the MongoDB service in docker-compose
     depends_on:
       - db-mongo        
     networks:
@@ -44,7 +44,7 @@ networks:
   backend_network:
   frontend_network:
   ci_network:
-    external: true
+    # external: true
 
 volumes:
   mongo-data:
