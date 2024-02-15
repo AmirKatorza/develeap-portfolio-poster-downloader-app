@@ -32,7 +32,8 @@ else:
     ROOT_PASSWORD = os.getenv('ROOT_PASSWORD', '').strip()
     if not ROOT_PASSWORD:
         raise ValueError("No ROOT_PASSWORD set for MongoAPI")    
-    MONGO_IP = f"mongodb://{ROOT_USER}:{ROOT_PASSWORD}@{MONGODB_HOSTS}/{DATABASE}"
+    # MONGO_IP = f"mongodb://{ROOT_USER}:{ROOT_PASSWORD}@{MONGODB_HOSTS}/{DATABASE}"
+    MONGO_IP = f"mongodb://{ROOT_USER}:{ROOT_PASSWORD}@{MONGODB_HOSTS}"
 
 # Log the MONGO_IP variable and initiate the MongoAPI class
 structured_log('info', 'Initializing MongoAPI', mongo_ip=MONGO_IP)
