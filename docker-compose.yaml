@@ -44,7 +44,7 @@ networks:
   backend_network:
   frontend_network:
   ci_network:
-    # external: true
+    external: true
 
 volumes:
   mongo-data:
