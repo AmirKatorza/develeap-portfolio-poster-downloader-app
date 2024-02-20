@@ -176,14 +176,7 @@ pipeline {
                             git config user.email '${GIT_USER_EMAIL}'
                         """
                     }
-                }
-
-                // dir("${GITOPS_REPO_NAME}/poster-downloader-chart") {
-                //     // Using sed to replace the image tag in values.yaml
-                //     sh """
-                //         sed -i 's/tag: .*/tag: "${CALCULATED_VERSION}"/' values.yaml
-                //     """
-                // }
+                }                
 
                 dir("${GITOPS_REPO_NAME}/cluster-resources/poster-downloader-chart") {
                     // Using yq to replace the image tag in values.yaml
