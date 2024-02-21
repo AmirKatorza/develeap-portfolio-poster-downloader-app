@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 import base64  # Import for Base64 encoding
 from flask import Flask, request, render_template, redirect, url_for
@@ -9,7 +10,9 @@ from structured_logging import structured_log
 
 # Determine log level from environment variable (default to INFO if not set)
 log_level = os.getenv('LOG_LEVEL', 'INFO').upper()
-logging.basicConfig(level=getattr(logging, log_level), format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=getattr(logging, log_level), 
+                    format='%(asctime)s - %(levelname)s - %(message)s', 
+                    handlers=[logging.StreamHandler(sys.stdout)])
 
 # logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
