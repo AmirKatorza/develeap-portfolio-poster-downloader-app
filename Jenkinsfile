@@ -208,13 +208,14 @@ pipeline {
                 docker network prune -f                
             '''
             cleanWs()
-            emailext(
+            emailext (
+                to: 'amir.katorza@gmail.com', 
                 attachLog: true, 
-                body: '', 
-                compressLog: true, 
-                subject: '', 
-                to: 'amir.katorza@gmail.com'
-                )
+                subject: '$DEFAULT_SUBJECT',
+                body: '$DEFAULT_CONTENT', 
+                compressLog: true
+                mimeTypes: 'text/html'
+            );
         }
     }
 }       
