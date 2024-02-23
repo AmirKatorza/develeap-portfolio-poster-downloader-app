@@ -208,6 +208,13 @@ pipeline {
                 docker network prune -f                
             '''
             cleanWs()
+            emailext(
+                attachLog: true, 
+                body: '', 
+                compressLog: true, 
+                subject: '', 
+                to: 'amir.katorza@gmail.com'
+                )
         }
     }
 }       
