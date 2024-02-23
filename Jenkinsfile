@@ -214,7 +214,7 @@ pipeline {
                 subject: '$DEFAULT_SUBJECT',
                 body: '$DEFAULT_CONTENT', 
                 compressLog: true, 
-                mimeTypes: 'text/html'
+                mimeType: 'text/html'
             );
         }
     }
