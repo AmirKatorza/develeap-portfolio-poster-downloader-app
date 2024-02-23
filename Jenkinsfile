@@ -213,7 +213,7 @@ pipeline {
                 attachLog: true, 
                 subject: '$DEFAULT_SUBJECT',
                 body: '$DEFAULT_CONTENT', 
-                compressLog: true
+                compressLog: true, 
                 mimeTypes: 'text/html'
             );
         }
