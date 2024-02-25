@@ -34,8 +34,9 @@ else:
     ROOT_USER = os.getenv('ROOT_USER', 'root').strip()
     ROOT_PASSWORD = os.getenv('ROOT_PASSWORD', '').strip()
     if not ROOT_PASSWORD:
-        raise ValueError("No ROOT_PASSWORD set for MongoAPI")    
-    # MONGO_IP = f"mongodb://{ROOT_USER}:{ROOT_PASSWORD}@{MONGODB_HOSTS}/{DATABASE}"
+        raise ValueError("No ROOT_PASSWORD set for MongoAPI")
+    else:
+        print(f"ROOT_PASSWORD: {ROOT_PASSWORD}")
     MONGO_IP = f"mongodb://{ROOT_USER}:{ROOT_PASSWORD}@{MONGODB_HOSTS}"
 
 # Log the MONGO_IP variable and initiate the MongoAPI class
