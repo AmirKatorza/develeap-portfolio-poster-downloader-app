@@ -14,8 +14,6 @@ logging.basicConfig(level=getattr(logging, log_level),
                     format='%(asctime)s - %(levelname)s - %(message)s', 
                     handlers=[logging.StreamHandler(sys.stdout)])
 
-# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
 app = Flask(__name__)
 
 # Read the API_KEY from environment variables and initiate the TMDBDownloader class
