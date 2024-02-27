@@ -1,18 +1,10 @@
 import os
-import sys
-import logging
-import base64  # Import for Base64 encoding
+import base64
 from flask import Flask, request, render_template, redirect, url_for
 from mongodb_api import MongoAPI
 from tmdb_downloader import TMDBDownloader
 from mongo_tmdb_logic import mongo_tmdb
 from structured_logging import structured_log
-
-# Determine log level from environment variable (default to INFO if not set)
-log_level = os.getenv('LOG_LEVEL', 'INFO').upper()
-logging.basicConfig(level=getattr(logging, log_level), 
-                    format='%(asctime)s - %(levelname)s - %(message)s', 
-                    handlers=[logging.StreamHandler(sys.stdout)])
 
 app = Flask(__name__)
 
@@ -22,7 +14,7 @@ if not API_KEY:
     raise ValueError("No API_KEY set for TMDBDownloader")
 downloader = TMDBDownloader(API_KEY)
 
-# Read the MONGO_IP from environment variables and initiate the MongoAPI class
+# Determine the MongoDB connection string based on environment variables
 MONGODB_HOSTS = os.getenv('MONGODB_HOSTS', 'localhost').strip()
 DATABASE = os.getenv('DATABASE', 'movies').strip()
 
@@ -72,6 +64,11 @@ def delete_movie(movie_name):
     response = mdb.del_image(movie_name)
     structured_log('info', 'Movie delete request processed', movie_name=movie_name, status=response['status'])
     return redirect(url_for('index'))
+
+@app.after_request
+def log_request_info(response):
+    structured_log('info', 'Request processed', request_method=request.method, request_url=request.url, response_status=response.status_code)
+    return response
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
