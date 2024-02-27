@@ -11,5 +11,7 @@ logger.addHandler(logHandler)
 logger.setLevel(logging.INFO)
 
 def structured_log(level, message, **kwargs):
+    # Prefix custom keys with 'app_' to avoid conflicts with LogRecord internal attributes
+    prefixed_kwargs = {f"app_{key}": value for key, value in kwargs.items()}
     log_method = getattr(logger, level)
-    log_method(message, extra=kwargs)
+    log_method(message, extra=prefixed_kwargs)
