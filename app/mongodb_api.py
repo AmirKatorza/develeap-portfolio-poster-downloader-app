@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 import gridfs
+from flask import url_for
 from structured_logging import structured_log  # Importing structured logging utility
 
 class MongoAPI:
@@ -71,6 +72,15 @@ class MongoAPI:
             structured_log('error', 'Error updating metadata', error=str(e), movie_name=movie_name)
             return {"status": "Error", "error": str(e), "data": None}
 
+    def get_all_posters(self):
+        posters = []
+        for poster in self.db[self.collection_files].find():
+            movie_name = poster.get('movie_name')
+            file_id = poster.get('_id')
+            # Construct a URL or method to get the image by file ID
+            image_src = url_for('image', file_id=str(file_id))  # Example route for serving images
+            posters.append({'movie_name': movie_name, 'image_src': image_src, 'file_id': file_id})
+        return posters
 
 # Example usage
 if __name__ == '__main__':

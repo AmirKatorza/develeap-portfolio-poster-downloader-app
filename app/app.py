@@ -1,6 +1,7 @@
 import os
+from bson import ObjectId
 import base64
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, make_response
 from mongodb_api import MongoAPI
 from tmdb_downloader import TMDBDownloader
 from mongo_tmdb_logic import mongo_tmdb
@@ -64,6 +65,25 @@ def delete_movie(movie_name):
     response = mdb.del_image(movie_name)
     structured_log('info', 'Movie delete request processed', movie_name=movie_name, status=response['status'])
     return redirect(url_for('index'))
+
+@app.route('/gallery')
+def gallery():
+    # New route to display gallery of all movie posters
+    posters = mdb.get_all_posters()  # Fetch all posters metadata from the database
+    return render_template('gallery.html', posters=posters)
+
+@app.route('/image/<file_id>')
+def image(file_id):
+    # New route to serve images directly from MongoDB GridFS
+    try:
+        file_id = ObjectId(file_id)  # Convert string back to ObjectId
+        file = mdb.fs.get(file_id)
+        response = make_response(file.read())
+        response.mimetype = file.content_type
+        return response
+    except Exception as e:
+        structured_log('error', 'Error serving image', error=str(e), file_id=file_id)
+        return 'Image not found', 404
 
 @app.after_request
 def log_request_info(response):
